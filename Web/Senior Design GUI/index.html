@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+  <script src="roslibjs/build/roslib.min.js"></script>
+
+  <title>MR.SCOT Command Interface</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <!-- ROS -->
+  <script>
+    var ros = new ROSLIB.Ros({
+      url : 'ws://192.168.10.114:9090'
+    });
+
+    // If there is an error on the backend, an 'error' emit will be emitted.
+    ros.on('error', function(error) {
+        document.getElementById('connecting').style.display = 'none';
+        document.getElementById('connected').style.display = 'none';
+        document.getElementById('closed').style.display = 'none';
+        document.getElementById('error').style.display = 'inline';
+        console.log(error);
+    });
+
+    // Find out exactly when we made a connection.
+    ros.on('connection', function() {
+        console.log('Connection made!');
+        document.getElementById('connecting').style.display = 'none';
+        document.getElementById('error').style.display = 'none';
+        document.getElementById('closed').style.display = 'none';
+        document.getElementById('connected').style.display = 'inline';
+    });
+
+    ros.on('close', function() {
+        console.log('Connection closed.');
+        document.getElementById('connecting').style.display = 'none';
+        document.getElementById('connected').style.display = 'none';
+        document.getElementById('closed').style.display = 'inline';
+    });
+
+    // Publishing a Topic
+    // ------------------
+
+    // First, we create a Topic object with details of the topic's name and message type.
+    // var stop = new ROSLIB.Topic({
+    //     ros : ros,
+    //     name : '/emergency_stop',
+    //     messageType : 'std_msgs/Bool'
+    // });
+
+    // // Then we create the payload to be published.
+    // var stop_flag = new ROSLIB.Message(1);
+
+    // // And finally, publish.
+    // stop.publish(stop_flag);
+
+    //Subscribing to a Topic
+    //----------------------
+
+    // Like when publishing a topic, we first create a Topic object with details of the topic's name
+    // and message type. Note that we can call publish or subscribe on the same topic object.
+    var robot_status_listener = new ROSLIB.Topic({
+        ros : ros,
+        name : '/robot_state',
+        messageType : 'turtlebot_mrs_msgs/RobotStatus'
+    });
+
+    // console.log(robot_status_listener);
+
+    // Then we add a callback to be called every time a message is published on this topic.
+    // robot_status_listener.subscribe(function(message) {
+    //   console.log('Received message on ' + robot_status_listener.name + ': ${JSON.stringify(message)}');
+    //   // if (message.data === "Menu") {
+    //   //   document.getElementById('menu').style.display = 'inline';
+    //   //   document.getElementById('approach').style.display = 'none';
+    //   //   document.getElementById('lock').style.display = 'none';
+    //   //   document.getElementById('unlock').style.display = 'none';
+    //   // } else if (message.data === "Approach") {
+    //   //   document.getElementById('menu').style.display = 'none';
+    //   //   document.getElementById('approach').style.display = 'inline';
+    //   //   document.getElementById('lock').style.display = 'none';
+    //   //   document.getElementById('unlock').style.display = 'none';
+    //   // } else if (message.data === "Lock") {
+    //   //   document.getElementById('menu').style.display = 'none';
+    //   //   document.getElementById('approach').style.display = 'none';
+    //   //   document.getElementById('lock').style.display = 'inline';
+    //   //   document.getElementById('unlock').style.display = 'none';
+    //   // } else if (message.data === "Unlock") {
+    //   //   document.getElementById('menu').style.display = 'none';
+    //   //   document.getElementById('approach').style.display = 'none';
+    //   //   document.getElementById('lock').style.display = 'none';
+    //   //   document.getElementById('unlock').style.display = 'inline';
+    //   // } else {
+    //   //   console.log('Error: ' + robot_status_listener.name + 'received \'' + message.data + ' which doesn\'t match any states.');
+    //   // }
+    // });
+  </script>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">MR.SCOT Command Interface</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+    <!--Command Buttons-->
+    <div class="row">
+      <div class="col-sm text-center">
+        <h2 class="mt-5">Commands:</h2>
+
+        <button id="stopButton" type="button" class="btn btn-danger" onclick="stop()">Stop</button>
+        <button id="startButton" type="button" class="btn btn-success" onclick="start()">Start</button>
+        <button id="menuButton" type="button" class="btn" onclick="publish_menu_state()">Menu</button>
+        <button id="lockButton" type="button" class="btn" onclick="publish_lock_state()">Lock</button>
+
+        <script>
+          function stop() {
+            document.getElementById("stopButton").innerHTML = "Stopping...";
+          }
+          function start() {
+            document.getElementById("startButton").innerHTML = "Starting...";
+          }
+          function publish_menu_state() {
+            var state_topic = new ROSLIB.Topic({
+              ros : ros,
+              name : '/robot_state',
+              messageType : 'std_msgs/String'
+            });
+          
+            // Then we create the payload to be published.
+            var state = new ROSLIB.Message("Menu");
+            
+            console.log('publishing menu');
+            // And finally, publish.
+            state_topic.publish(state);
+          }
+          function publish_lock_state() {
+            var state_topic = new ROSLIB.Topic({
+              ros : ros,
+              name : '/robot_state',
+              messageType : 'std_msgs/String'
+            });
+          
+            // Then we create the payload to be published.
+            var state = new ROSLIB.Message("Lock");
+            console.log(state_topic);
+            console.log('publishing lock');
+            
+            // And finally, publish.
+            state_topic.publish(state);
+          }
+        </script>
+      </div>
+    </div>
+    <!-- State Machine Status -->
+    <div class="row">
+      <div>
+        <p>Robot State:</p>
+        <p id="stateMachineStatusIndicator" style="vertical-align: bottom ">
+          Current State
+        </p>
+        <p id="approach" style="display:none">
+          Approaching
+        </p>
+        <p id="lock" style="display:none">
+          Locking
+        </p>
+        <p id="unlock" style="display:none">
+          Unlocking
+        </p>
+      </div>
+    </div>
+    <!-- Rosbridge Status -->
+    <div class="row"> 
+      <h3 class="mt-5">Rosbridge state:</h3>
+      <div class="col-sm" id="statusIndicator" >
+        
+        <p id="connecting">
+          Connecting to rosbridge...
+        </p>
+        <p id="connected" style="color:#00D600; display:none">
+          Connected
+        </p>
+        <p id="error" style="color:#FF0000; display:none">
+          Error in the backend!
+        </p>
+        <p id="closed" style="display:none">
+          Connection closed.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- <p>Run the following commands in the terminal then refresh this page. Check the JavaScript
+    console for the output.</p>
+  <ol>
+    <li><tt>roscore</tt></li>
+    <li><tt>rostopic pub /listener std_msgs/String "Hello, World"</tt></li>
+    <li><tt>rostopic echo /emergency_stop</tt></li>
+    <li><tt>rosrun rospy_tutorials add_two_ints_server</tt></li>
+    <li><tt>roslaunch rosbridge_server rosbridge_websocket.launch</tt></li>
+  </ol> -->
+</body>
+</html>
