@@ -1,0 +1,60 @@
+<launch>
+
+<arg name="scot_name" default="" doc="robot name, e.g. robot_1"/>
+
+<group ns="/$(arg scot_name)">
+
+	
+  <include file="$(find mr_scot)/launch/scot_robot.launch">
+    <arg name="scot_name" value="$(arg scot_name)"/>
+  </include>
+
+  <include file="$(find mr_scot)/launch/gmapping.launch">
+    <arg name="scot_name" value="$(arg scot_name)"/>
+  </include>	
+
+  <include file="$(find mr_scot)/launch/navigation_stack.launch">
+    <arg name="scot_name" value="$(arg scot_name)"/>
+  </include>
+	
+  <node pkg="rrt_exploration" type="local_rrt_detector" name="local_detector" output="screen">
+    <param name="eta" value="1.0"/>
+    <param name="map_topic" value="/$(arg scot_name)/map"/>
+    <param name="robot_frame" value="/$(arg scot_name)/base_link"/>
+  </node>
+
+  <node pkg="rrt_exploration" type="global_rrt_detector" name="global_detector" output="screen">
+  <param name="eta" value="1.0"/>
+  <param name="map_topic" value="/$(arg scot_name)/map"/>
+  </node>
+
+  <node pkg="rrt_exploration" type="filter.py" name="filter" output="screen">
+  <param name="map_topic" value="/$(arg scot_name)/map"/>
+  <param name="info_radius" value="1"/>
+  <param name="costmap_clearing_threshold" value="70"/>
+  <param name="goals_topic" value="/detected_points"/>
+  <param name="namespace_init_count" value="1"/>
+  <param name="namespace" value="/robot_"/>
+  <param name="n_robots" value="1"/>
+  <param name="rate" value="100"/>
+  </node>
+
+  <node pkg="rrt_exploration" type="assigner.py" name="assigner" output="screen">
+  <param name="map_topic" value="/$(arg scot_name)/map"/>
+  <param name="global_frame" value="/$(arg scot_name)/map"/>
+  <param name="info_radius" value="1"/>
+  <param name="info_multiplier" value="3.0"/>
+  <param name="hysteresis_radius" value="3.0"/>
+  <param name="hysteresis_gain" value="2.0"/>
+  <param name="frontiers_topic" value="/filtered_points"/>
+  <param name="n_robots" value="1"/>
+  <param name="namespace_init_count" value="1"/>
+  <param name="namespace" value="/robot_"/>
+  <param name="delay_after_assignement" value="0.5"/>
+  <param name="rate" value="100"/>
+  </node>
+
+
+</group>
+  
+</launch>

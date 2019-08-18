@@ -1,0 +1,8 @@
+1. to install rosbridge install the following
+sudo apt-get install ros-<rosdistro>-rosbridge-suite
+sudo apt-get install ros-kinetic-rosauth
+sudo apt-get install python-pip
+python -m pip install tornado
+
+2. to run rosbridge node
+roslaunch rosbridge_server rosbridge_websocket.launch
