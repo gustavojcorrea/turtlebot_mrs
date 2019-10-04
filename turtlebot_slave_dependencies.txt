@@ -1,0 +1,5 @@
+Might need to reinstall the following:
+
+1. ar_track_alvar kinetic package
+2. rplidar package
+
