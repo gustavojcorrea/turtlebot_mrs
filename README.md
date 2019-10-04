@@ -32,4 +32,4 @@ rosserial: `git clone https://github.com/ros-drivers/rosserial.git`<br />
 ## Running the Slave
 - Run the following `roslaunch all.launch scot_name:=robot_1` where `scot_name` is given an arbitrary name that is different from other robots
 - This launch file launches the following packages: gmapping, navigation-stack....
-
+- Run the following to enable the electromagnet arduino script `rosrun rosserial_python serial_node.py /dev/ttyACM0`
