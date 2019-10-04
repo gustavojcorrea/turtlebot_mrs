@@ -13,23 +13,23 @@ Integrated with the following:
 - 
 
 ## Slave Setup
-- In the 'src' folder clone the following packages
+- In the `src` folder clone the following packages
 
-'git clone https://github.com/ros-perception/ar_track_alvar.git'
-'git clone https://github.com/Slamtec/rplidar_ros.git'
-'git clone https://github.com/ros-drivers/rosserial.git'
+ar_track_alvar: `git clone https://github.com/ros-perception/ar_track_alvar.git`
+rplidar_ros: `git clone https://github.com/Slamtec/rplidar_ros.git`
+rosserial: `git clone https://github.com/ros-drivers/rosserial.git`
 
 - Install the following
 
-'sudo apt-get install ros-kinetic-rosserial-arduino'
-'sudo apt-get install ros-kinetic-rosserial'
+`sudo apt-get install ros-kinetic-rosserial-arduino`
+`sudo apt-get install ros-kinetic-rosserial`
 
-- Go to the catkin_ws folder and run 'catkin_make'
+- Go to the catkin_ws folder and run `catkin_make`
 
 ## Running the Master
-- Run the following 'python sm_mrscot_demo.py'
+- Run the following `python sm_mrscot_demo.py` to start the state machine
 
 ## Running the Slave
-- Run the following 'roslaunch all.launch scot_name:=robot_1' where 'scot_name' is given an arbitrary name that is different from other robots
+- Run the following `roslaunch all.launch scot_name:=robot_1` where `scot_name` is given an arbitrary name that is different from other robots
 - This launch file launches the following packages: gmapping, navigation-stack....
 
