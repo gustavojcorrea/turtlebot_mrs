@@ -1,0 +1,42 @@
+<launch>
+  <arg name="scot_name"/>
+
+  <!-- Gmapping -->
+  <node ns="/$(arg scot_name)" pkg="gmapping" type="slam_gmapping" name="turtlebot3_slam_gmapping" output="screen">
+    <param name="map_frame" value="$(arg scot_name)/map"/>
+    <param name="base_frame" value="$(arg scot_name)/base_footprint"/>
+    <param name="odom_frame" value="$(arg scot_name)/odom"/>
+    <param name="map_update_interval" value="2.0"/>
+    <param name="maxRange" value="4.0"/>
+    <param name="maxUrange" value="3.5"/>
+    <param name="minRange" value="0.12"/>
+    <param name="minimumScore" value="100"/>
+    <param name="linearUpdate" value="0.4"/>
+    <param name="angularUpdate" value="0.5"/>
+    <param name="temporalUpdate" value="15"/>
+    <param name="delta" value="0.05"/>
+    <param name="lskip" value="0"/>
+    <param name="particles" value="50"/>
+    <param name="sigma" value="0.05"/>
+    <param name="kernelSize" value="1"/>
+    <param name="lstep" value="0.05"/>
+    <param name="astep" value="0.05"/>
+    <param name="iterations" value="5"/>
+    <param name="lsigma" value="0.075"/>
+    <param name="ogain" value="3.0"/>
+    <param name="srr" value="0.01"/>
+    <param name="srt" value="0.02"/>
+    <param name="str" value="0.01"/>
+    <param name="stt" value="0.02"/>
+    <param name="resampleThreshold" value="0.5"/>
+    <param name="xmin" value="-20.0"/>
+    <param name="ymin" value="-20.0"/>
+    <param name="xmax" value="20.0"/>
+    <param name="ymax" value="20.0"/>
+    <param name="llsamplerange" value="0.05"/>
+    <param name="llsamplestep" value="0.05"/>
+    <param name="lasamplerange" value="0.005"/>
+    <param name="lasamplestep" value="0.005"/>
+    <param name="transform_publish_period" value="0.1"/>
+  </node>
+</launch>

@@ -1,0 +1,36 @@
+<launch>
+
+<node pkg="tf" type="static_transform_publisher" name="world_to_2" args="0 1 0 0 0 0 /map /robot_2/map 20"/>
+
+<node pkg="tf" type="static_transform_publisher" name="world_to_1" args="0 0 0 0 0 0 /map /robot_1/map 20" />
+<!--
+<node pkg="tf" type="static_transform_publisher" name="world_to_2" args="0 1 0 0 0 0 /map /robot_2/map 20" />
+-->
+<!--
+<node pkg="tf" type="static_transform_publisher" name="two_to_one" args="0 -1 0 0 0 0 /robot_2/map /robot_1/map 20" />
+-->
+
+<!--
+<node pkg="multirobot_map_merge" type="estimate_map_pose" respawn="false" name="map_pose" output="screen">
+  <param name="robot_map_topic" value="map"/>
+  <param name="estimation_confidence" value="0.1"/>
+  <param name="world_frame" value="world"/>
+  <param name="estimation_rate" value="0.5"/>
+</node>
+-->
+
+<node pkg="multirobot_map_merge" type="map_merge" respawn="false" name="map_merge" output="screen">
+  <param name="robot_map_topic" value="map"/>
+  <param name="merged_map_topic" value="map"/>
+  <param name="world_frame" value="world"/>
+  <param name="merging_rate" value="1"/>
+  <param name="known_init_poses" value="false"/>
+</node>
+
+<node pkg="multirobot_map_merge" type="robot_discover" respawn="false" name="discovery" output="screen">
+  <param name="robot_map_topic" value="map"/>
+  <param name="robot_namespace" value="robot_"/>
+  <param name="discovery_rate" value="1"/>
+</node>
+
+</launch>

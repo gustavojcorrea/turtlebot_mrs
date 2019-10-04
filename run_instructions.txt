@@ -1,0 +1,5 @@
+1. To run slave launch the following and add a name for scot_robot
+
+roslaunch all.launch scot_name:=robot_1
+
+
