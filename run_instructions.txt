@@ -2,4 +2,10 @@
 
 roslaunch all.launch scot_name:=robot_1
 
+2. To run master run the following in the mr_scot package
 
+python sm_mrscot_demo.py
+
+3. Additional robots can use the turtlebot_mrs_slave folder and run the following
+
+roslaunch all.launch scot_name:=robot_2
