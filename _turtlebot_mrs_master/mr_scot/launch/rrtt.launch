@@ -1,9 +1,0 @@
-<launch>
-
-<node pkg="rrt_exploration" type="local_rrt_detector" name="local_detector" output="screen">
-  <param name="eta" value="1"/>
-  <param name="map_topic" value="/robot_1/map"/>
-  <param name="robot_frame" value="/robot_1/base_footprint"/>
-  </node>
-
-</launch>

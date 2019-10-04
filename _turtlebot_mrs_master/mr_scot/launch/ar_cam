@@ -1,7 +1,0 @@
-<launch>
- <include file="$(find mr_scot)/launch/camera.launch" />
- <include file="$(find mr_scot)/launch/track.launch" />
-
-</launch>
-
-
