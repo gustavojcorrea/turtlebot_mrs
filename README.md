@@ -13,16 +13,16 @@ Integrated with the following:
 - 
 
 ## Slave Setup
-- In the `src` folder clone the following packages
+- In the `src` folder clone the following packages<br />
 
-ar_track_alvar: `git clone https://github.com/ros-perception/ar_track_alvar.git`
-rplidar_ros: `git clone https://github.com/Slamtec/rplidar_ros.git`
-rosserial: `git clone https://github.com/ros-drivers/rosserial.git`
+ar_track_alvar: `git clone https://github.com/ros-perception/ar_track_alvar.git`<br />
+rplidar_ros: `git clone https://github.com/Slamtec/rplidar_ros.git`<br />
+rosserial: `git clone https://github.com/ros-drivers/rosserial.git`<br />
 
-- Install the following
+- Install the following<br />
 
-`sudo apt-get install ros-kinetic-rosserial-arduino`
-`sudo apt-get install ros-kinetic-rosserial`
+`sudo apt-get install ros-kinetic-rosserial-arduino`<br />
+`sudo apt-get install ros-kinetic-rosserial`<br />
 
 - Go to the catkin_ws folder and run `catkin_make`
 
